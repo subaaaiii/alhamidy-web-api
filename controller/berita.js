@@ -12,7 +12,6 @@ export const postBerita = async (req, res) => {
   try {
     const { penulis, judul, kategori, konten } = req.body;
     const image = req.file;
-    console.log(image);
     let gambar;
     if (image) {
       gambar = image.filename;
@@ -141,5 +140,28 @@ export const getBerita = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: error });
+  }
+};
+
+export const getBeritaByCategories = async (req, res) => {
+  try {
+    const { kategori } = req.params;
+    console.log(kategori);
+    const berita = await Berita.findAll({
+      where: {
+        kategori: kategori,
+      },
+    });
+    if (berita.length > 0) {
+      res.status(201).json({
+        msg: "Berhasil Mendapatkan Berita Berdasarkan Kategori",
+        data: berita,
+      });
+    } else {
+      res.status(404).json({ message: `Berita Dengan Kategori ${kategori} Tidak Ditemukan` });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };

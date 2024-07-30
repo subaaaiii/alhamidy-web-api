@@ -57,7 +57,11 @@ export const Katalog = db.define(
       allowNull: false,
     },
     harga: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    kategori: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     image_link: {
