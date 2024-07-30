@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import router from "./routes/index.js";
 import db from "./config/database.js";
-import { Berita, Katalog } from "./models/models.js";
+import { Berita, Katalog, Dakwah } from "./models/models.js";
 dotenv.config();
 
 const app = express();
@@ -16,6 +16,7 @@ try {
     console.log("Database Connected...");
     await Berita.sync();
     await Katalog.sync();
+    await Dakwah.sync();
   } catch (error) {
     console.error(error);
   }
@@ -26,6 +27,7 @@ try {
   app.use(express.json());
   app.use("/images/berita", express.static('./images/berita'))
   app.use("/images/katalog", express.static('./images/katalog'))
+  app.use("/images/dakwah", express.static('./images/dakwah'))
   app.use(express.urlencoded({extended: false}));
   app.listen(port, () =>
     console.log(`Server running on http://localhost:${port}`)

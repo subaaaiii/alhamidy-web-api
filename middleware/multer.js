@@ -37,6 +37,22 @@ const storageKatalog = multer.diskStorage({
   },
 });
 
+const storageDakwah = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const filePath = path.join(__dirname, "../images/dakwah");
+    cb(null, filePath);
+  },
+  filename: function (req, file, cb) {
+    const fileName =
+      path.parse(file.originalname).name +
+      "" +
+      Date.now() +
+      path.extname(file.originalname);
+
+    cb(null, fileName);
+  },
+});
+
 export const uploadImageBerita = multer({
   storage: storageBerita,
 }).single("gambar");
@@ -44,3 +60,7 @@ export const uploadImageBerita = multer({
 export const uploadImageKatalog = multer({
   storage: storageKatalog,
 }).single("gambarKatalog");
+
+export const uploadImageDakwah = multer({
+  storage: storageDakwah,
+}).single("gambarDakwah");

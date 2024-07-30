@@ -1,19 +1,26 @@
 import express from "express";
 import {
+   getBerita,
   deleteBerita,
-  getBerita,
   getBeritaByCategories,
   postBerita,
   updateBerita,
 } from "../controller/berita.js";
 import {
   deleteKatalog,
-  getKatalog,
   getKatalogByCategories,
+  getKatalog,
   postKatalog,
   updateKatalog,
 } from "../controller/katalog.js";
-import { uploadImageKatalog, uploadImageBerita } from "../middleware/multer.js";
+import {
+  getDakwah,
+  getDakwahByCategories,
+  postDakwah,
+  updateDakwah,
+  deleteDakwah,
+} from "../controller/dakwah.js";
+import { uploadImageKatalog, uploadImageBerita, uploadImageDakwah } from "../middleware/multer.js";
 const router = express.Router();
 
 router.get("/berita", getBerita);
@@ -27,5 +34,11 @@ router.get("/katalog/:kategori", getKatalogByCategories);
 router.post("/katalog", uploadImageKatalog, postKatalog);
 router.patch("/katalog", uploadImageKatalog, updateKatalog);
 router.delete("/katalog/:id", deleteKatalog);
+
+router.get("/dakwah", getDakwah);
+router.get("/dakwah/:kategori", getDakwahByCategories);
+router.post("/dakwah", uploadImageDakwah, postDakwah);
+router.patch("/dakwah", uploadImageDakwah, updateDakwah);
+router.delete("/dakwah/:id", deleteDakwah);
 
 export default router;
