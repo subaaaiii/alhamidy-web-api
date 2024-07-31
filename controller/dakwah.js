@@ -129,11 +129,30 @@ export const deleteDakwah = async (req, res) => {
 
 export const getDakwah = async (req, res) => {
   try {
-    const dakwah = await Dakwah.findAll();
-    res.status(201).json({
+    const { search } = req.query;
+    const query = {
+      [Op.or]: []
+    };
+
+    if (search) {
+      query[Op.or].push(
+        { judul: { [Op.like]: `%${search}%` } },
+        { kategori: { [Op.like]: `%${search}%` } }
+      );
+    }
+    
+    let dakwah;
+    if (search) {
+      dakwah = await Dakwah.findAll({ where: query });
+    } else {
+      dakwah = await Dakwah.findAll();
+    }
+
+    res.status(200).json({
       msg: "Berhasil Mengambil Semua Data Dakwah",
       data: dakwah,
     });
+    
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -154,11 +173,9 @@ export const getDakwahByCategories = async (req, res) => {
         data: dakwah,
       });
     } else {
-      res
-        .status(404)
-        .json({
-          message: `Dakwah Dengan Kategori ${kategori} Tidak Ditemukan`,
-        });
+      res.status(404).json({
+        message: `Dakwah Dengan Kategori ${kategori} Tidak Ditemukan`,
+      });
     }
   } catch (error) {
     console.error(error);
@@ -181,7 +198,9 @@ export const getDakwahById = async (req, res) => {
         data: dakwah,
       });
     } else {
-      res.status(404).json({ message: `Dakwah Dengan Id ${id} Tidak Ditemukan` });
+      res
+        .status(404)
+        .json({ message: `Dakwah Dengan Id ${id} Tidak Ditemukan` });
     }
   } catch (error) {
     console.error(error);

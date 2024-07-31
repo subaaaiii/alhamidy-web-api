@@ -10,11 +10,30 @@ const __dirname = dirname(__filename);
 
 export const getKatalog = async (req, res) => {
   try {
-    const katalog = await Katalog.findAll();
+    const { search } = req.query;
+    const query = {
+      [Op.or]: [],
+    };
+
+    if (search) {
+      query[Op.or].push(
+        { nama: { [Op.like]: `%${search}%` } },
+        { kategori: { [Op.like]: `%${search}%` } }
+      );
+    }
+
+    let katalog;
+    if (search) {
+      katalog = await Katalog.findAll({ where: query });
+    } else {
+      katalog = await Katalog.findAll();
+    }
+
     res.status(201).json({
       msg: "Berhasil Mengambil Semua Data Katalog",
       data: katalog,
     });
+    
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -35,7 +54,9 @@ export const getKatalogByCategories = async (req, res) => {
         data: katalog,
       });
     } else {
-      res.status(404).json({ message: `Katalog Dengan Kategori ${kategori} Tidak Ditemukan` });
+      res.status(404).json({
+        message: `Katalog Dengan Kategori ${kategori} Tidak Ditemukan`,
+      });
     }
   } catch (error) {
     console.error(error);
@@ -58,7 +79,9 @@ export const getKatalogById = async (req, res) => {
         data: katalog,
       });
     } else {
-      res.status(404).json({ message: `Katalog Dengan Id ${id} Tidak Ditemukan` });
+      res
+        .status(404)
+        .json({ message: `Katalog Dengan Id ${id} Tidak Ditemukan` });
     }
   } catch (error) {
     console.error(error);
