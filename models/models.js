@@ -2,6 +2,10 @@
 import { Sequelize } from "sequelize";
 import db from "../config/database.js";
 import moment from "moment-timezone";
+import dotenv from "dotenv";
+dotenv.config();
+
+const { APP_API_BASE } = process.env;
 
 const { DataTypes } = Sequelize;
 
@@ -31,9 +35,7 @@ export const Berita = db.define(
     image_link: {
       type: DataTypes.VIRTUAL,
       get() {
-        return `http://localhost:5000/images/berita/${this.getDataValue(
-          "gambar"
-        )}`;
+        return `${APP_API_BASE}/images/berita/${this.getDataValue("gambar")}`;
       },
     },
   },
@@ -66,10 +68,8 @@ export const Katalog = db.define(
     },
     image_link: {
       type: DataTypes.VIRTUAL,
-      get() { 
-        return `http://localhost:5000/images/katalog/${this.getDataValue(
-          "gambar"
-        )}`;
+      get() {
+        return `${APP_API_BASE}/images/katalog/${this.getDataValue("gambar")}`;
       },
     },
   },
@@ -103,9 +103,7 @@ export const Dakwah = db.define(
     image_link: {
       type: DataTypes.VIRTUAL,
       get() {
-        return `http://localhost:5000/images/dakwah/${this.getDataValue(
-          "gambar"
-        )}`;
+        return `${APP_API_BASE}/images/dakwah/${this.getDataValue("gambar")}`;
       },
     },
   },

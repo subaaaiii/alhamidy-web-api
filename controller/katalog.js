@@ -43,6 +43,29 @@ export const getKatalogByCategories = async (req, res) => {
   }
 };
 
+export const getKatalogById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const katalog = await Katalog.findAll({
+      where: {
+        id: id,
+      },
+    });
+    if (katalog.length > 0) {
+      res.status(201).json({
+        msg: "Berhasil Mendapatkan Katalog Berdasarkan Kategori",
+        data: katalog,
+      });
+    } else {
+      res.status(404).json({ message: `Katalog Dengan Id ${id} Tidak Ditemukan` });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
 export const postKatalog = async (req, res) => {
   try {
     const { nama, harga, kategori } = req.body;

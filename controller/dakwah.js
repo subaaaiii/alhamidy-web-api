@@ -165,3 +165,26 @@ export const getDakwahByCategories = async (req, res) => {
     res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
+export const getDakwahById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const dakwah = await Dakwah.findAll({
+      where: {
+        id: id,
+      },
+    });
+    if (dakwah.length > 0) {
+      res.status(201).json({
+        msg: "Berhasil Mendapatkan Dakwah Berdasarkan Kategori",
+        data: dakwah,
+      });
+    } else {
+      res.status(404).json({ message: `Dakwah Dengan Id ${id} Tidak Ditemukan` });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};

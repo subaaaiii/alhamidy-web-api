@@ -165,3 +165,26 @@ export const getBeritaByCategories = async (req, res) => {
     res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
+export const getBeritaById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const berita = await Berita.findAll({
+      where: {
+        id: id,
+      },
+    });
+    if (berita.length > 0) {
+      res.status(201).json({
+        msg: "Berhasil Mendapatkan Berita Berdasarkan Kategori",
+        data: berita,
+      });
+    } else {
+      res.status(404).json({ message: `Berita Dengan Id ${id} Tidak Ditemukan` });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
