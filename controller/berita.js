@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { Op } from "sequelize";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -133,11 +134,31 @@ export const deleteBerita = async (req, res) => {
 
 export const getBerita = async (req, res) => {
   try {
-    const berita = await Berita.findAll();
-    res.status(201).json({
+    const { search } = req.query;
+    const query = {
+      [Op.or]: [],
+    };
+
+    if (search) {
+      query[Op.or].push(
+        { penulis: { [Op.like]: `%${search}%` } },
+        { judul: { [Op.like]: `%${search}%` } },
+        { kategori: { [Op.like]: `%${search}%` } }
+      );
+    }
+
+    let berita;
+    if (search) {
+      berita = await Berita.findAll({ where: query });
+    } else {
+      berita = await Berita.findAll();
+    }
+
+    res.status(200).json({
       msg: "Berhasil Mengambil Semua Data Berita",
       data: berita,
     });
+    
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -158,7 +179,9 @@ export const getBeritaByCategories = async (req, res) => {
         data: berita,
       });
     } else {
-      res.status(404).json({ message: `Berita Dengan Kategori ${kategori} Tidak Ditemukan` });
+      res.status(404).json({
+        message: `Berita Dengan Kategori ${kategori} Tidak Ditemukan`,
+      });
     }
   } catch (error) {
     console.error(error);
@@ -181,7 +204,9 @@ export const getBeritaById = async (req, res) => {
         data: berita,
       });
     } else {
-      res.status(404).json({ message: `Berita Dengan Id ${id} Tidak Ditemukan` });
+      res
+        .status(404)
+        .json({ message: `Berita Dengan Id ${id} Tidak Ditemukan` });
     }
   } catch (error) {
     console.error(error);
