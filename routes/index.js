@@ -28,13 +28,17 @@ import {
   uploadImageBerita,
   uploadImageDakwah,
 } from "../middleware/multer.js";
+
+import { loginUser } from "../middleware/login.js";
 const router = express.Router();
-+
+
+
+router.post("/cms/login", loginUser)
 router.get("/berita", getBerita);
 router.get("/berita/:id", getBeritaById);
 router.get("/berita/kategori/:kategori", getBeritaByCategories);
 router.post("/berita", uploadImageBerita, postBerita);
-router.patch("/berita/:id", uploadImageKatalog, updateBerita);
+router.patch("/berita/:id", uploadImageBerita, updateBerita);
 router.delete("/berita/:id", deleteBerita);
 
 router.get("/katalog", getKatalog);
