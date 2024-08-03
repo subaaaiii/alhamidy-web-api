@@ -125,8 +125,9 @@ export const postKatalog = async (req, res) => {
 
 export const updateKatalog = async (req, res) => {
   try {
-    const { id, nama, harga, kategori } = req.body;
+    const { nama, harga, kategori } = req.body;
     const image = req.file;
+    const id = req.params.id;
     let gambarKatalog;
     const imageBeforeUpdate = await Katalog.findOne({
       attributes: ["gambar"],
