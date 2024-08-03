@@ -13,10 +13,10 @@ export const postBerita = async (req, res) => {
   try {
     const { penulis, judul, kategori, konten } = req.body;
     const image = req.file;
-    let gambar;
+    let gambarBerita;
     if (image) {
-      gambar = image.filename;
-    } else gambar = "noimage.png";
+      gambarBerita = image.filename;
+    } else gambarBerita = "noimage.png";
 
     if (
       !penulis ||
@@ -35,7 +35,7 @@ export const postBerita = async (req, res) => {
       penulis,
       judul,
       kategori,
-      gambar,
+      gambar: gambarBerita,
       konten,
     });
     res.status(201).json({
@@ -54,8 +54,8 @@ export const updateBerita = async (req, res) => {
   try {
     const { penulis, judul, kategori, konten } = req.body;
     const image = req.file;
-    const { id } = req.params.id;
-    let gambar;
+    const id  = req.params.id;
+    let gambarBerita;
     const imageBeforeUpdate = await Berita.findOne({
       attributes: ["gambar"],
       where: {
@@ -63,9 +63,9 @@ export const updateBerita = async (req, res) => {
       },
     });
     if (image) {
-      gambar = image.filename;
+      gambarBerita = image.filename;
     } else {
-      gambar = imageBeforeUpdate.gambar;
+      gambarBerita = imageBeforeUpdate.gambar;
     }
     const berita = await Berita.findByPk(id);
     if (berita) {
@@ -74,7 +74,7 @@ export const updateBerita = async (req, res) => {
           penulis,
           judul,
           kategori,
-          gambar,
+          gambar: gambarBerita,
           konten,
         },
         {

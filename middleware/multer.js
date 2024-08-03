@@ -55,7 +55,7 @@ const storageDakwah = multer.diskStorage({
 
 export const uploadImageBerita = multer({
   storage: storageBerita,
-}).single("gambar");
+}).single("gambarBerita");
 
 export const uploadImageKatalog = multer({
   storage: storageKatalog,
