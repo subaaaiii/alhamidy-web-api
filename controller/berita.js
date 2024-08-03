@@ -54,7 +54,7 @@ export const updateBerita = async (req, res) => {
   try {
     const { penulis, judul, kategori, konten } = req.body;
     const image = req.file;
-    const { id } = req.body;
+    const { id } = req.params.id;
     let gambar;
     const imageBeforeUpdate = await Berita.findOne({
       attributes: ["gambar"],

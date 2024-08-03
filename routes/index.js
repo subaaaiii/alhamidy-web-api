@@ -34,7 +34,7 @@ router.get("/berita", getBerita);
 router.get("/berita/:id", getBeritaById);
 router.get("/berita/kategori/:kategori", getBeritaByCategories);
 router.post("/berita", uploadImageBerita, postBerita);
-router.patch("/berita", uploadImageKatalog, updateBerita);
+router.patch("/berita/:id", uploadImageKatalog, updateBerita);
 router.delete("/berita/:id", deleteBerita);
 
 router.get("/katalog", getKatalog);
