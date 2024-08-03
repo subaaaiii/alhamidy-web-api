@@ -41,7 +41,7 @@ router.get("/katalog", getKatalog);
 router.get("/katalog/:id", getKatalogById);
 router.get("/katalog/kategori/:kategori", getKatalogByCategories);
 router.post("/katalog", uploadImageKatalog, postKatalog);
-router.patch("/katalog", uploadImageKatalog, updateKatalog);
+router.patch("/katalog/:id", uploadImageKatalog, updateKatalog);
 router.delete("/katalog/:id", deleteKatalog);
 
 router.get("/dakwah", getDakwah);
