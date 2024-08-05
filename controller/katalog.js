@@ -1,15 +1,10 @@
-import { Katalog } from "../models/models.js";
-import { Url } from "url";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { Op } from "sequelize";
+const { Katalog } = require("../models/models.js");
+const path = require("path");
+const fs = require("fs");
+const { Op } = require("sequelize");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-export const getKatalog = async (req, res) => {
+const getKatalog = async (req, res) => {
   try {
     const { search } = req.query;
     const query = {
@@ -41,7 +36,7 @@ export const getKatalog = async (req, res) => {
   }
 };
 
-export const getKatalogByCategories = async (req, res) => {
+const getKatalogByCategories = async (req, res) => {
   try {
     const { kategori } = req.params;
     console.log(kategori);
@@ -66,7 +61,7 @@ export const getKatalogByCategories = async (req, res) => {
   }
 };
 
-export const getKatalogById = async (req, res) => {
+const getKatalogById = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
@@ -77,7 +72,7 @@ export const getKatalogById = async (req, res) => {
     });
     if (katalog.length > 0) {
       res.status(201).json({
-        msg: "Berhasil Mendapatkan Katalog Berdasarkan Kategori",
+        msg: "Berhasil Mendapatkan Katalog Berdasarkan Id",
         data: katalog,
       });
     } else {
@@ -91,7 +86,7 @@ export const getKatalogById = async (req, res) => {
   }
 };
 
-export const postKatalog = async (req, res) => {
+const postKatalog = async (req, res) => {
   try {
     const { nama, harga, kategori } = req.body;
     const image = req.file;
@@ -123,7 +118,7 @@ export const postKatalog = async (req, res) => {
   }
 };
 
-export const updateKatalog = async (req, res) => {
+const updateKatalog = async (req, res) => {
   try {
     const { nama, harga, kategori } = req.body;
     const image = req.file;
@@ -156,7 +151,7 @@ export const updateKatalog = async (req, res) => {
         }
       );
       if (image && imageBeforeUpdate.gambar != "noimage.png") {
-        fs.unlinkSync("images/katalog/" + imageBeforeUpdate.gambar);
+        fs.unlinkSync(path.join(__dirname, "..", "images", "katalog", imageBeforeUpdate.gambar));
       }
       res.status(201).json({
         message: "Berhasil Mengubah Produk",
@@ -171,7 +166,7 @@ export const updateKatalog = async (req, res) => {
   }
 };
 
-export const deleteKatalog = async (req, res) => {
+const deleteKatalog = async (req, res) => {
   try {
     const { id } = req.params;
     const katalog = await Katalog.findByPk(id);
@@ -200,4 +195,13 @@ export const deleteKatalog = async (req, res) => {
     console.error(error);
     res.status(500).json({ msg: "Internal Server Error" });
   }
+};
+
+module.exports = {
+  getKatalog,
+  getKatalogByCategories,
+  getKatalogById,
+  postKatalog,
+  updateKatalog,
+  deleteKatalog,
 };

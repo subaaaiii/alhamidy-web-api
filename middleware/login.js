@@ -1,16 +1,11 @@
-import { Berita } from "../models/models.js";
-import { Url } from "url";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { Op } from "sequelize";
-import jwt from "jsonwebtoken"
+const { Berita } = require('../models/models.js');
+const path = require('path');
+const fs = require('fs');
+const { Op } = require('sequelize');
+const jwt = require('jsonwebtoken');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-export const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
     const { username, password } = req.body;
 
     const user = {
@@ -26,4 +21,8 @@ export const loginUser = async (req, res) => {
         res.status(401).json({ message: 'Invalid Username or Password' });
     }
 };
+
+module.exports = {
+    loginUser
+  };
 

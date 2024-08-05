@@ -1,9 +1,7 @@
-import multer from "multer";
-import path from "path";
-import { fileURLToPath } from "url";
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const storageBerita = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -53,14 +51,20 @@ const storageDakwah = multer.diskStorage({
   },
 });
 
-export const uploadImageBerita = multer({
+const uploadImageBerita = multer({
   storage: storageBerita,
 }).single("gambarBerita");
 
-export const uploadImageKatalog = multer({
+const uploadImageKatalog = multer({
   storage: storageKatalog,
 }).single("gambarKatalog");
 
-export const uploadImageDakwah = multer({
+const uploadImageDakwah = multer({
   storage: storageDakwah,
 }).single("gambarDakwah");
+
+module.exports = {
+  uploadImageDakwah,
+  uploadImageKatalog,
+  uploadImageBerita
+};

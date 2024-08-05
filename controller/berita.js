@@ -1,15 +1,12 @@
-import { Berita } from "../models/models.js";
-import { Url } from "url";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { Op } from "sequelize";
+const { Berita } = require("../models/models.js");
+const path = require("path");
+const fs = require("fs");
+const { Op } = require("sequelize");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-export const postBerita = async (req, res) => {
+
+// Controller Functions
+const postBerita = async (req, res) => {
   try {
     const { penulis, judul, kategori, konten } = req.body;
     const image = req.file;
@@ -50,11 +47,11 @@ export const postBerita = async (req, res) => {
   }
 };
 
-export const updateBerita = async (req, res) => {
+const updateBerita = async (req, res) => {
   try {
     const { penulis, judul, kategori, konten } = req.body;
     const image = req.file;
-    const id  = req.params.id;
+    const id = req.params.id;
     let gambarBerita;
     const imageBeforeUpdate = await Berita.findOne({
       attributes: ["gambar"],
@@ -84,7 +81,7 @@ export const updateBerita = async (req, res) => {
         }
       );
       if (image && imageBeforeUpdate.gambar != "noimage.png") {
-        fs.unlinkSync("images/berita/" + imageBeforeUpdate.gambar);
+        fs.unlinkSync(path.join(__dirname, "..", "images", "berita", imageBeforeUpdate.gambar));
       }
       res.status(201).json({
         message: "Berhasil Mengubah Berita",
@@ -99,7 +96,7 @@ export const updateBerita = async (req, res) => {
   }
 };
 
-export const deleteBerita = async (req, res) => {
+const deleteBerita = async (req, res) => {
   const { id } = req.params;
   console.log(id);
   try {
@@ -132,7 +129,7 @@ export const deleteBerita = async (req, res) => {
   }
 };
 
-export const getBerita = async (req, res) => {
+const getBerita = async (req, res) => {
   try {
     const { search } = req.query;
     const query = {
@@ -164,7 +161,7 @@ export const getBerita = async (req, res) => {
   }
 };
 
-export const getBeritaByCategories = async (req, res) => {
+const getBeritaByCategories = async (req, res) => {
   try {
     const { kategori } = req.params;
     console.log(kategori);
@@ -189,7 +186,7 @@ export const getBeritaByCategories = async (req, res) => {
   }
 };
 
-export const getBeritaById = async (req, res) => {
+const getBeritaById = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
@@ -200,7 +197,7 @@ export const getBeritaById = async (req, res) => {
     });
     if (berita.length > 0) {
       res.status(201).json({
-        msg: "Berhasil Mendapatkan Berita Berdasarkan Kategori",
+        msg: "Berhasil Mendapatkan Berita Berdasarkan Id",
         data: berita,
       });
     } else {
@@ -212,4 +209,13 @@ export const getBeritaById = async (req, res) => {
     console.error(error);
     res.status(500).json({ msg: "Internal Server Error" });
   }
+};
+
+module.exports = {
+  postBerita,
+  updateBerita,
+  deleteBerita,
+  getBerita,
+  getBeritaByCategories,
+  getBeritaById,
 };

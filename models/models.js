@@ -1,15 +1,15 @@
-"use_strict";
-import { Sequelize } from "sequelize";
-import db from "../config/database.js";
-import moment from "moment-timezone";
-import dotenv from "dotenv";
+"use strict";
+
+const { Sequelize, DataTypes } = require("sequelize");
+const db = require("../config/database.js");
+const moment = require("moment-timezone");
+const dotenv = require("dotenv");
+
 dotenv.config();
 
 const { APP_API_BASE } = process.env;
 
-const { DataTypes } = Sequelize;
-
-export const Berita = db.define(
+const Berita = db.define(
   "berita",
   {
     penulis: {
@@ -47,7 +47,7 @@ export const Berita = db.define(
   }
 );
 
-export const Katalog = db.define(
+const Katalog = db.define(
   "katalog",
   {
     gambar: {
@@ -81,7 +81,7 @@ export const Katalog = db.define(
   }
 );
 
-export const Dakwah = db.define(
+const Dakwah = db.define(
   "dakwah",
   {
     judul: {
@@ -114,3 +114,5 @@ export const Dakwah = db.define(
     freezeTableName: true,
   }
 );
+
+module.exports = { Berita, Katalog, Dakwah };

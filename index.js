@@ -1,27 +1,36 @@
-import express from "express";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
-import cors from "cors";
-import router from "./routes/index.js";
-import db from "./config/database.js";
-import { Berita, Katalog, Dakwah } from "./models/models.js";
+const express = require('express');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const router = require('./routes/index.js');
+const db = require('./config/database.js');
+const { Berita, Katalog, Dakwah } = require('./models/models.js');
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
 
-try {
-  await db.authenticate();
-  console.log("Database Connected...");
-  await Berita.sync();
-  await Katalog.sync();
-  await Dakwah.sync();
-} catch (error) {
-  console.error(error);
-}
+// try {
+//   await db.authenticate();
+//   console.log("Database Connected...");
+//   await Berita.sync();
+//   await Katalog.sync();
+//   await Dakwah.sync();
+// } catch (error) {
+//   console.error(error);
+// }
 
+app.get("/", (req, res) => {
+  try {
+    res.status(200).send({
+      message: "this is my api",
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 // CORS configuration
 const corsOptions = {
   origin: '*', // Replace with your frontend domain

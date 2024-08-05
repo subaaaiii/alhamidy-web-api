@@ -1,15 +1,9 @@
-import { Dakwah } from "../models/models.js";
-import { Url } from "url";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { Op } from "sequelize";
+const { Dakwah } = require("../models/models.js");
+const path = require("path");
+const fs = require("fs");
+const { Op } = require("sequelize");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-export const postDakwah = async (req, res) => {
+const postDakwah = async (req, res) => {
   try {
     const { judul, kategori, konten } = req.body;
     const image = req.file;
@@ -47,11 +41,11 @@ export const postDakwah = async (req, res) => {
   }
 };
 
-export const updateDakwah = async (req, res) => {
+const updateDakwah = async (req, res) => {
   try {
     const { judul, kategori, konten } = req.body;
     const image = req.file;
-    const { id } = req.body;
+    const { id } = req.params;
     let gambarDakwah;
     const imageBeforeUpdate = await Dakwah.findOne({
       attributes: ["gambar"],
@@ -80,7 +74,7 @@ export const updateDakwah = async (req, res) => {
         }
       );
       if (image && imageBeforeUpdate.gambar != "noimage.png") {
-        fs.unlinkSync("images/dakwah/" + imageBeforeUpdate.gambar);
+        fs.unlinkSync(path.join(__dirname, "..", "images", "dakwah", imageBeforeUpdate.gambar));
       }
       res.status(201).json({
         message: "Berhasil Mengubah Konten Dakwah",
@@ -95,7 +89,7 @@ export const updateDakwah = async (req, res) => {
   }
 };
 
-export const deleteDakwah = async (req, res) => {
+const deleteDakwah = async (req, res) => {
   const { id } = req.params;
   console.log(id);
   try {
@@ -128,7 +122,7 @@ export const deleteDakwah = async (req, res) => {
   }
 };
 
-export const getDakwah = async (req, res) => {
+const getDakwah = async (req, res) => {
   try {
     const { search } = req.query;
     const query = {
@@ -159,7 +153,7 @@ export const getDakwah = async (req, res) => {
   }
 };
 
-export const getDakwahByCategories = async (req, res) => {
+const getDakwahByCategories = async (req, res) => {
   try {
     const { kategori } = req.params;
     console.log(kategori);
@@ -184,7 +178,7 @@ export const getDakwahByCategories = async (req, res) => {
   }
 };
 
-export const getDakwahById = async (req, res) => {
+const getDakwahById = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
@@ -195,7 +189,7 @@ export const getDakwahById = async (req, res) => {
     });
     if (dakwah.length > 0) {
       res.status(201).json({
-        msg: "Berhasil Mendapatkan Dakwah Berdasarkan Kategori",
+        msg: "Berhasil Mendapatkan Dakwah Berdasarkan Id",
         data: dakwah,
       });
     } else {
@@ -207,4 +201,13 @@ export const getDakwahById = async (req, res) => {
     console.error(error);
     res.status(500).json({ msg: "Internal Server Error" });
   }
+};
+
+module.exports = {
+  postDakwah,
+  updateDakwah,
+  deleteDakwah,
+  getDakwah,
+  getDakwahByCategories,
+  getDakwahById,
 };

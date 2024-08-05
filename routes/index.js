@@ -1,35 +1,35 @@
-import express from "express";
-import {
+const express = require('express');
+const {
   getBerita,
   getBeritaById,
   deleteBerita,
   getBeritaByCategories,
   postBerita,
   updateBerita,
-} from "../controller/berita.js";
-import {
+} = require('../controller/berita.js');
+const {
   deleteKatalog,
   getKatalogByCategories,
   getKatalogById,
   getKatalog,
   postKatalog,
   updateKatalog,
-} from "../controller/katalog.js";
-import {
+} = require('../controller/katalog.js');
+const {
   getDakwah,
   getDakwahById,
   getDakwahByCategories,
   postDakwah,
   updateDakwah,
   deleteDakwah,
-} from "../controller/dakwah.js";
-import {
+} = require('../controller/dakwah.js');
+const {
   uploadImageKatalog,
   uploadImageBerita,
   uploadImageDakwah,
-} from "../middleware/multer.js";
+} = require('../middleware/multer.js');
+const { loginUser } = require('../middleware/login.js');
 
-import { loginUser } from "../middleware/login.js";
 const router = express.Router();
 
 
@@ -55,4 +55,4 @@ router.post("/dakwah", uploadImageDakwah, postDakwah);
 router.patch("/dakwah", uploadImageDakwah, updateDakwah);
 router.delete("/dakwah/:id", deleteDakwah);
 
-export default router;
+module.exports = router;
