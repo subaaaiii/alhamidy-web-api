@@ -9,8 +9,8 @@ const loginUser = async (req, res) => {
     const { username, password } = req.body;
 
     const user = {
-        username: 'admin',
-        password: 'password123',
+        username: 'bismillah',
+        password: 'pesantrenkeren4',
     };
 
     // Check if username and password match
